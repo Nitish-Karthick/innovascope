@@ -11,13 +11,13 @@ const TrendDetails = ({ techName, selectedFilter, onBack, onUploadClick }) => {
     const [topTech, setTopTech] = useState(null);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/status')
+        fetchWithAuth('/api/status')
             .then(r => r.json())
             .then(d => {
                 setHasData(d.has_data);
                 if (d.has_data) {
                     // Fetch top trending item for dynamic title
-                    return fetchWithAuth('http://localhost:8000/api/trending')
+                    return fetchWithAuth('/api/trending')
                         .then(r => r.json())
                         .then(d => {
                              if (techName && typeof techName === 'string') {

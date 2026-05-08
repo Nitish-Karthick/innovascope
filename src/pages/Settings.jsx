@@ -13,7 +13,7 @@ const Settings = ({ onBack }) => {
     useEffect(() => {
         const loadSettings = async () => {
             try {
-                const res = await fetchWithAuth('http://localhost:8000/api/user/settings');
+                const res = await fetchWithAuth('/api/user/settings');
                 if (!res.ok) throw new Error('Failed to load settings');
                 const data = await res.json();
                 setFormData({
@@ -39,7 +39,7 @@ const Settings = ({ onBack }) => {
         setSuccess(false);
 
         try {
-            const res = await fetchWithAuth('http://localhost:8000/api/user/settings', {
+            const res = await fetchWithAuth('/api/user/settings', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

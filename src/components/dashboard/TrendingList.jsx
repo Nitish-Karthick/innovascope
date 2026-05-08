@@ -10,7 +10,7 @@ const TrendingList = ({ filter, onItemClick }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/trending')
+        fetchWithAuth('/api/trending')
             .then(res => res.json())
             .then(d => {
                 setData(d.items);

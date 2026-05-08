@@ -6,7 +6,7 @@ const TechRadarChart = ({ onPointClick }) => {
     const [points, setPoints] = useState([]);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/radar')
+        fetchWithAuth('/api/radar')
             .then(res => res.json())
             .then(d => setPoints(d.points || []))
             .catch(console.error);

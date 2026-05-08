@@ -17,7 +17,7 @@ const MediaCoverageChart = ({ filter }) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/media-coverage')
+        fetchWithAuth('/api/media-coverage')
             .then(r => r.json())
             .then(d => setData(d.data || []))
             .catch(console.error);

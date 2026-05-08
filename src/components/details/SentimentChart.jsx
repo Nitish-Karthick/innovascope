@@ -6,7 +6,7 @@ const SentimentChart = () => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/sentiment')
+        fetchWithAuth('/api/sentiment')
             .then(res => res.json())
             .then(d => setData(d))
             .catch(console.error);

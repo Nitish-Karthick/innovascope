@@ -36,12 +36,12 @@ const MarketNews = ({ onBack }) => {
     const [selectedTechNews, setSelectedTechNews] = useState("All");
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/status')
+        fetchWithAuth('/api/status')
             .then(r => r.json())
             .then(d => {
                 setStatus(d);
                 if (d.has_data) {
-                    fetchWithAuth('http://localhost:8000/api/trending')
+                    fetchWithAuth('/api/trending')
                         .then(r => r.json())
                         .then(data => {
                             const flattenedNews = [];

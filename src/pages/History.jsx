@@ -10,7 +10,7 @@ const History = ({ onBack }) => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const res = await fetchWithAuth('http://localhost:8000/api/user/history');
+                const res = await fetchWithAuth('/api/user/history');
                 if (!res.ok) throw new Error('Failed to load history');
                 const data = await res.json();
                 setHistory(data.history || []);

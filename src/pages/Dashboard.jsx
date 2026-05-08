@@ -42,7 +42,7 @@ const Dashboard = ({ selectedFilter, onViewDetails, onUploadClick, onRefresh }) 
     const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/status')
+        fetchWithAuth('/api/status')
             .then(r => r.json())
             .then(d => setStatus(d))
             .catch(() => setStatus({ has_data: false, has_more: false }));
@@ -51,7 +51,7 @@ const Dashboard = ({ selectedFilter, onViewDetails, onUploadClick, onRefresh }) 
     const handleLoadMore = async () => {
         setLoadingMore(true);
         try {
-            const res = await fetchWithAuth('http://localhost:8000/api/process-next', { method: 'POST' });
+            const res = await fetchWithAuth('/api/process-next', { method: 'POST' });
             if (!res.ok) {
                 const data = await res.json();
                 if (data.detail === "MISSING_API_KEY") {

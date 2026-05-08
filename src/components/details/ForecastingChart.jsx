@@ -21,7 +21,7 @@ const ForecastingChart = ({ filter }) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/forecast')
+        fetchWithAuth('/api/forecast')
             .then(r => r.json())
             .then(d => setData(d.data || []))
             .catch(console.error);

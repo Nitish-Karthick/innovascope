@@ -25,7 +25,7 @@ const DatasetUpload = ({ onBack, onUploadSuccess }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetchWithAuth('http://localhost:8000/api/upload', {
+            const response = await fetchWithAuth('/api/upload', {
                 method: 'POST',
                 body: formData,
             });

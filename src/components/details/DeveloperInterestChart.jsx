@@ -19,7 +19,7 @@ const DeveloperInterestChart = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetchWithAuth('http://localhost:8000/api/developer-interest')
+        fetchWithAuth('/api/developer-interest')
             .then(r => r.json())
             .then(d => setData(d.data || []))
             .catch(console.error);

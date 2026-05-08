@@ -10,7 +10,7 @@ const Header = ({ onUploadClick, onReset, selectedFilter, setSelectedFilter }) =
 
     const handleReset = async () => {
         setResetting(true);
-        await fetchWithAuth('http://localhost:8000/api/reset', { method: 'DELETE' });
+        await fetchWithAuth('/api/reset', { method: 'DELETE' });
         setResetting(false);
         setShowResetConfirm(false);
         onReset?.();
