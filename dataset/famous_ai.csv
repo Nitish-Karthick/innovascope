@@ -1,0 +1,11 @@
+technology,category,sentiment_score,investment_velocity,growth_phase
+GPT-5.4 Pro,LLM,0.97,99.2,Mainstream Adoption
+GPT-5.4 Thinking,Reasoning Model,0.95,97.8,High Growth
+Claude 4.6 Sonnet,LLM,0.96,98.5,Mainstream Adoption
+Claude 4.6 Opus,LLM,0.94,96.0,High Growth
+Gemini 3.1 Pro,Multimodal LLM,0.96,98.0,Mainstream Adoption
+Gemini 3.1 Flash-Lite,Lightweight LLM,0.88,90.5,Mainstream Adoption
+Llama 4 Maverick,Open Source LLM,0.95,97.5,Breakthrough
+Meta Muse Spark,Multimodal LLM,0.90,91.0,Emerging
+GPT Image 1.5,Image Generation,0.89,88.0,High Growth
+Sora 2,Video Generation,0.93,94.0,Early Stage

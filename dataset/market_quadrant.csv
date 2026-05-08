@@ -1,0 +1,4 @@
+name,quadrant,sentiment
+Docker,Leaders,0.95
+Podman,Challengers,0.85
+LXC,Niche Players,0.60

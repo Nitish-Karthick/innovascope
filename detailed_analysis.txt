@@ -1,0 +1,78 @@
+INNOVASCOPE: DASHBOARD PROTOTYPE FULL DETAILED ANALYSIS
+=========================================================
+
+1. EXECUTIVE SUMMARY
+---------------------------------------------------------
+The "Dashboard Prototype" (Innovascope) is a web-based automated technology intelligence platform. The primary business use-case is to ingest a base dataset of technologies, enrich them using real-time news scraping from Google News, process that text using a Large Language Model (Groq Llama-3.3-70b) to determine sentiment and keywords, and finally display this data on a dynamic, high-fidelity frontend dashboard.
+
+2. SYSTEM ARCHITECTURE 
+---------------------------------------------------------
+The system is built as a Single Page Application (SPA) utilizing a modern React stack on the frontend and a Python FastAPI service on the backend. 
+
+Frontend Stack:
+- React 19 + Vite: Core framework and bundler.
+- Tailwind CSS (v3.4.1): Utility-first CSS framework for rapid styling.
+- Recharts (v3.7.0): Declarative charting library used for data visualization (Line charts, Radar charts).
+- Lucide React: Iconography.
+
+Backend Stack:
+- FastAPI: High-performance API framework running on Uvicorn.
+- Pandas: Handles data ingestion (CSV/JSON) and structured dataframe manipulations.
+- BeautifulSoup4 + Requests: Used to scrape Google News RSS feeds.
+- Groq SDK: Interfaces with the "llama-3.3-70b-versatile" model.
+- Storage: Uses local JSON files (`dashboard_data.json` and `processing_queue.json`) to persist state and mock a database.
+
+3. LOGICAL WORKFLOW: THE DUAL-ENGINE PIPELINE
+---------------------------------------------------------
+The most complex part of this application is the backend data ingestion and enrichment pipeline.
+
+Step 1: Dataset Upload
+When a user uploads a CSV (e.g. `sample_tech_dataset.csv`), the `/api/upload` FastAPI endpoint parses it using Pandas. It specifically looks for columns like "technology", "category", "sentiment_score", and "investment_velocity". 
+
+Step 2: Queueing and Pagination
+To avoid timing out the frontend or hitting API rate limits with Groq, the backend slices the dataset into batches of 10 records. The first batch is processed immediately, and the rest are saved into `processing_queue.json`.
+
+Step 3: Enrichment (Dual Engine)
+For each record in the batch:
+A. Scraper Engine (`scraper.py`): Reaches out to `https://news.google.com/rss/search?q={Tech Name}+technology` and extracts the top 10 article titles and text snippets.
+B. AI Engine (`llm.py`): Takes the aggregated news text and passes it to Groq with a strict system prompt. The LLM must return a JSON with exactly three keys: `sentiment_score` (0.0 to 1.0), `keywords` (list of 3 strings), and an `analysis_summary`.
+
+Step 4: Data Assembly
+After a batch is enriched, `rebuild_dashboard_data()` calculates derived metrics:
+- It converts 0.0-1.0 sentiment scores into percentages.
+- It calculates X/Y coordinates for the TechRadar chart based on the sentiment and the index of the item.
+- It generates a fake 12-month history array ("sparkline" data) using a sine wave function applied over the `investment_velocity` to simulate historical trending data for the charts.
+This compiled data is written to `dashboard_data.json`.
+
+Step 5: Frontend Polling
+The React frontend (in `Dashboard.jsx`) calls `/api/status`. If there are still items in the backend queue, a "Load More Intelligence" button appears. Clicking this triggers `/api/process-next`, executing Steps 3 & 4 on the next batch of 10 without a page reload.
+
+4. FRONTEND COMPONENTS & UI LOGIC
+---------------------------------------------------------
+The frontend does not use a routing library (like React Router). Instead, `App.jsx` maintains a `currentView` state variable ('dashboard', 'details', 'upload', etc.).
+
+Key Components:
+A. `TechRadarChart.jsx`
+- Fetches `/api/radar`.
+- Renders a concentric circular map where "points" represent technologies. Position is determined by the `top` and `left` properties computed in the backend.
+
+B. `TrendingList.jsx`
+- Fetches `/api/trending`.
+- Uses Recharts `<LineChart>` to draw small, inline sparklines (using the sine-wave generated historical data).
+- Implements a filter slicing mechanism: if the user selects "Last 7 Days" vs "Last 90 Days", it truncates the Recharts data array before passing it to the component.
+
+C. `SentimentChart.jsx`
+- Fetches `/api/sentiment`.
+- Renders an SVG donut chart and horizontal progress bars indicating the aggregate "Positive" vs "Neutral" sentiment of the current dataset. 
+- Displays the LLM-generated `keywords` dynamically at the bottom.
+
+5. IDENTIFIED RISKS & LIMITATIONS
+---------------------------------------------------------
+- File-System Database: The use of `.json` files for the queue and data storage makes the application completely stateful and incapable of horizontal scaling. It is strictly a prototype architecture.
+- Web Scraping Brittle-ness: The Google News RSS feed format could change, breaking `scraper.py`.
+- LLM Output Consistency: While the prompt asks for strict JSON, LLMs can sometimes hallucinate formatting, which might break `json.loads` in `llm.py` if Groq fails to respect the `response_format={"type": "json_object"}` enforcement.
+- Hardcoded Dependencies: Ports (`localhost:8000`) are hardcoded directly in React components (e.g., inside `TrendingList.jsx` and `Dashboard.jsx`).
+
+6. CONCLUSION
+---------------------------------------------------------
+The Innovascope Dashboard Prototype successfully demonstrates a modern pattern for AI-augmented applications: using a fast frontend to poll an asynchronous backend pipeline that blends deterministic logic (web scraping) with non-deterministic logic (LLM sentiment analysis).

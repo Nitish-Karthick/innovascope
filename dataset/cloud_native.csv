@@ -1,0 +1,6 @@
+technology,category,investment_velocity
+Kubernetes,Orchestration,95
+Docker,Containerization,80
+Terraform,Infrastructure as Code,88
+Prometheus,Monitoring,75
+Istio,Service Mesh,60

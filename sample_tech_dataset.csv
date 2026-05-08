@@ -1,0 +1,7 @@
+technology,category,sentiment_score,investment_velocity,growth_phase
+Quantum Computing,Hardware,0.85,92.5,Emerging
+Generative AI,Software,0.92,98.4,High Growth
+Neuromorphic Chips,Hardware,0.78,85.2,Early Stage
+Solid State Batteries,Energy,0.88,90.1,Breakthrough
+Edge AI,Software,0.89,94.3,Mainstream Adoption
+CRISPR-Cas9,Biotech,0.91,89.7,Clinical Trials
